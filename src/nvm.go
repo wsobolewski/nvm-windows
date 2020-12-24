@@ -77,6 +77,7 @@ func main() {
   // Run the appropriate method
   switch args[1] {
     case "install": install(detail,procarch)
+    case "i": install(detail,procarch)
     case "uninstall": uninstall(detail)
     case "use": use(detail,procarch)
     case "list": list(detail)
@@ -196,7 +197,8 @@ func install(version string, cpuarch string) {
 
   // if the user specifies only the major version number then install the latest
   // version of the major version number
-  if len(version) == 1 {
+  ver := strings.Split(version,".")
+  if len(ver) == 1 {
     version = findLatestSubVersion(version)
   } else {
     version = cleanVersion(version)

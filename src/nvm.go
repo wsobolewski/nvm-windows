@@ -162,14 +162,14 @@ func install(version string, cpuarch string) {
   }
 
   if version == "" {
-		if file.Exists(".nvmrc") {
+	if file.Exists(".nvmrc") {
       version = nvmrc()
-		} else {
+	} else {
     fmt.Println("\nInvalid version.")
     fmt.Println(" ")
     help()
     return
-		}
+	}
   }
 
   cpuarch = strings.ToLower(cpuarch)

@@ -1,23 +1,24 @@
 package main
 
 import (
-  "bytes"
-  "fmt"
-  "io/ioutil"
-  "log"
-  "os"
-  "os/exec"
-  "path/filepath"
-  "regexp"
-  "strconv"
-  "strings"
-  "syscall"
-  "time"
-  "./nvm/web"
-  "./nvm/arch"
-  "./nvm/file"
-  "./nvm/node"
-  "github.com/olekukonko/tablewriter"
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
+	"syscall"
+	"time"
+
+	"./nvm/arch"
+	"./nvm/file"
+	"./nvm/node"
+	"./nvm/web"
+	"github.com/olekukonko/tablewriter"
 )
 
 const (
@@ -200,9 +201,11 @@ func install(version string, cpuarch string) {
   ver := strings.Split(version,".")
   if len(ver) == 1 {
     version = findLatestSubVersion(version)
-  } else {
+  }else if len(ver) == 2 {
     version = cleanVersion(version)
   }
+
+  version = strings.Trim(version,"v")
 
   if checkVersionExceedsLatest(version) {
   	fmt.Println("Node.js v"+version+" is not yet released or available.")

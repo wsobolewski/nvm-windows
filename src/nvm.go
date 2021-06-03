@@ -312,7 +312,7 @@ func install(version string, cpuarch string) {
         // may consider keep the temp files here
         os.RemoveAll(tempDir)
 
-        fmt.Println("\n\nInstallation complete. If you want to use this version, type\n\nnvm use "+version)
+        fmt.Println("\n\nInstallation complete.")// If you want to use this version, type\n\nnvm use "+version)
       } else if moveNpmErr != nil {
         fmt.Println("Error: Unable to move directory "+npmSourcePath+" to node_modules: "+moveNpmErr.Error())
       } else {
@@ -326,12 +326,13 @@ func install(version string, cpuarch string) {
 
     // Reset the SSL verification
     env.verifyssl = true
-
+    use(version, cpuarch)
     // If this is ever shipped for Mac, it should use homebrew.
     // If this ever ships on Linux, it should be on bintray so it can use yum, apt-get, etc.
     return
    } else {
      fmt.Println("Version "+version+" is already installed.")
+     use(version, cpuarch)
      return
    }
 
@@ -388,6 +389,8 @@ func use(version string, cpuarch string) {
   if version == "" {
     if file.Exists(".nvmrc") {
 	    version = nvmrc()
+    } else {
+      list("installed")
     }
   }
 
@@ -398,6 +401,7 @@ func use(version string, cpuarch string) {
   // Make sure the version is installed. If not, warn.
   if !node.IsVersionInstalled(env.root,version,cpuarch) {
     fmt.Println("node v"+version+" ("+cpuarch+"-bit) is not installed.")
+    install(version,cpuarch)
     if cpuarch == "32" {
       if node.IsVersionInstalled(env.root,version,"64") {
         fmt.Println("\nDid you mean node v"+version+" (64-bit)?\nIf so, type \"nvm use "+version+" 64\" to use it.")
@@ -408,7 +412,7 @@ func use(version string, cpuarch string) {
         fmt.Println("\nDid you mean node v"+version+" (32-bit)?\nIf so, type \"nvm use "+version+" 32\" to use it.")
       }
     }
-    return
+   // return
   }
 
   // Remove symlink if it already exists
